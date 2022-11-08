@@ -14,13 +14,7 @@
     }
   ],
   "require": {
-    "blackdoor/util": "@dev",
+    "blackdoor/util": "dev-main",
     "brick/varexporter": "^0.3.7"
-  },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "/Users/cornedejong/Development/blackdoor/packages/php/util"
-    }
-  ]
+  }
 }
