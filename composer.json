@@ -1,0 +1,26 @@
+{
+  "name": "blackdoor/testing",
+  "type": "package",
+  "version": "1.0.0-dev",
+  "autoload": {
+    "psr-4": {
+      "Blackdoor\\Testing\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Corné de Jong",
+      "email": "5366568-cornedejong@users.noreply.gitlab.com"
+    }
+  ],
+  "require": {
+    "blackdoor/util": "@dev",
+    "brick/varexporter": "^0.3.7"
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "/Users/cornedejong/Development/blackdoor/packages/php/util"
+    }
+  ]
+}
