@@ -14,14 +14,28 @@ class TestCollection
         self::$tests[get_class($test)] = $test;
     }
 
+    public function getColumns()
+    {
+        if (file_exists('/.dockerenv')) {
+            $size = @exec('stty size');
+            if ($size === false) {
+                return 0;
+            }
+
+            return intval(trim(explode(" ", $size)[1]));
+        }
+
+        return intval(trim(@exec("tput cols")));
+    }
+
     /**
-     * Run All registered tests
-     *
-     * @return bool         If the tests failed or succeeded
-     */
+         * Run All registered tests
+         *
+         * @return bool         If the tests failed or succeeded
+         */
     public function runInConsole(array $tests = null): bool
     {
-        $cols = intval(trim(exec("tput cols")));
+        $cols = $this->getColumns();
         $this->cols = $cols;
 
         $tests = $tests ?? self::$tests;
@@ -190,6 +204,10 @@ class TestCollection
 
     public function justifySpaceBetween(int $cols, string $stringA, string $stringB, int $strALength = null, int $strBLength = null): string
     {
+        if ($cols === 0) {
+            return "";
+        }
+
         if (is_null($strALength)) {
             $strALength = strlen(preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $stringA));
         }
@@ -204,18 +222,30 @@ class TestCollection
 
     public function formatCenter(int $cols, string $string): string
     {
+        if ($cols === 0) {
+            return $string;
+        }
+
         $stringLength = strlen(preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $string));
         return implode("", \array_fill(0, intval(($cols - $stringLength) / 2), " ")) . $string;
     }
 
     public function leftPad(string $string, int $cols): string
     {
+        if ($cols === 0) {
+            return $string;
+        }
+
         $stringLength = strlen(preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $string));
         return implode("", \array_fill(0, $cols - $stringLength, " ")) . $string;
     }
 
     public function rightPad(string $string, int $cols): string
     {
+        if ($cols === 0) {
+            return $string;
+        }
+
         $stringLength = strlen(preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $string));
         return $string . implode("", \array_fill(0, $cols - $stringLength, " "));
     }
