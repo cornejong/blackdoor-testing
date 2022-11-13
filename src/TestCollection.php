@@ -77,7 +77,7 @@ class TestCollection
                 $numberOfResults = count($testResults);
 
                 if ($numberOfResults === 0) {
-                    if ($testInfo["name"] === "init") {
+                    if ($testInfo["name"] === "init" || $testInfo["name"] === "shutdown") {
                         print($this->justifySpaceBetween($cols, "  \033[93;1m✓\033[0m " . $testInfo['formattedName'] . " - [" . $testInfo['duration'] . "s]", "\033[103;1m          \033[0;0m") . "\n");
                         $printedLines++;
                     } else {
