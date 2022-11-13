@@ -66,15 +66,22 @@ abstract class AbstractTest
                 'duration' => (number_format(((hrtime(true) - $testStart) / 1e+9), $this->timePrecision))
             ], $this->getEvaluation($test) ?? []);
 
-            /* $resultCallback([
-                'name' => $test,
-                'formattedName' =>  $this->formatTestName($test),
-                'duration' => (number_format(((hrtime(true) - $testStart) / 1e+9), $this->timePrecision))
-            ], $this->getEvaluation($test) ?? []); */
-
             if (in_array(false, array_column($this->evaluations[$test] ?? [], "status"))) {
                 break;
             }
+        }
+
+        /* If we have a boot method */
+        if (\method_exists($this, 'shutdown')) {
+            $startCallback("Shutdown");
+            $startTime = \hrtime(true);
+            call_user_func([$this, 'shutdown']);
+            call_user_func($resultCallback, [
+                'status' => true,
+                'name' => "shutdown",
+                'formattedName' => "Shutdown",
+                'duration' => (number_format(((hrtime(true) - $startTime) / 1e+9), $this->timePrecision))
+            ], []);
         }
     }
 
